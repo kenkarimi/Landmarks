@@ -14,7 +14,7 @@ import Combine
 
 final class ModelData: ObservableObject { //conforms to the ObservableObject protocol from the Combine framework.
     @Published var landmarks: [Landmark] = load("landmarkData.json") //Landmark type is defined in Landmark.Swift
-    var hikes: [Hike] = load("hikes.json") //Because you’ll never modify hike data after initially loading it, you don’t need to mark it with the @Published attribute.
+    //var hikes: [Hike] = load("hikes.json") //Because you’ll never modify hike data after initially loading it, you don’t need to mark it with the @Published attribute.
     //NB: Project kind of ends here. Unsure if I want to continue with the rest.
 }
 
