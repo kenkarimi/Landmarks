@@ -13,7 +13,7 @@ struct LandmarkRow: View {
     var body: some View {
         HStack {
             landmark.image //A computed property was used in Landmark.Swift to load the image in Image(imageName) so all we have to do here is refer to it.
-                .resizable() //without this, the .frame will reduce the image view size, but the entire image itself won't fit inside the smaller width & length.
+                .resizable() //Allows image to be resized according the user defined width/height within the .frame below. Without this, the .frame will reduce the image view size, but the entire image itself won't fit inside the smaller width & length.
                 .frame(width: 50.0, height: 50.0)
                 .clipShape(Rectangle())
                 .overlay {
