@@ -26,4 +26,8 @@ struct ContentView_Previews: PreviewProvider {
  
  You can use this inspector to edit the modifiers of the text view*/
 
-/*Click the plus button at the top right of xcode window to open the library from where you can drag various components e.g. text view*/
+/*Click the plus button at the top right of xcode window to open the object library from where you can drag various components e.g. text view*/
+
+/*Clicking at the top left of the xcode window shows or hides the project navigator.*/
+
+/*Clicking at the top right of the xcode window past the plus button shows or hides the inspectors.*/

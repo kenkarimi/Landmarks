@@ -39,7 +39,7 @@ struct LandmarkRow_Previews: PreviewProvider {
     static var landmarks = ModelData().landmarks
     
     static var previews: some View {
-        Group { //If you wan't to preview more than one row, use this to group them together if not, you can choose to leave it out.
+        Group { //If you want to preview more than one row, use this to group them together if not, you can choose to leave it out.
             LandmarkRow(landmark: landmarks[0]) //We add the landmark parameter to the LandmarkRow initializer, specifying the first element of the landmarks array.(The landmarks array was created in the ModelData.Swift file)
             LandmarkRow(landmark: landmarks[1])
         }
