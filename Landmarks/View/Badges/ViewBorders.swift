@@ -34,15 +34,49 @@ struct RoundedCorners: View {
                 //NB: The bounds of the shape are width: 15 and height: 100 so we can not define an x coordinate higher than 15 or a y coordinate higher than 100. If we do, the line draws and then comes back within the bounds.
                 //NB: In Swiftui's path.addArc(), the standard cartasian system where clockwise is moving from positive y to positive x(like a clock) is "flipped". So in Swiftui, counterclockwise is actually clockwise. So in path.addArc(), when we specify "clockwise: false" we move positionally from -90(top) to 0(trailing) to 90(bottom) to 180(leading) to 270(top) again like a clock moves.
                 path.move(to: CGPoint(x: w / 2.0, y: 0)) //Move cursor from (0,0) rightward to (15/2, 0) which is (7.5, 0). Cursor still yet to start drawing.
-                path.addLine(to: CGPoint(x: w, y: 0)) //Draw a line from where the cursor currently is (7.5, 0) to (15,0) since 'w' is 15. Line won't show since you need three enclosed points in order to '.fill' color and we currently only have 2
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 1(START): \(cursor_location)")
+                }
+                path.addLine(to: CGPoint(x: w - tr, y: 0)) //Draw a line from where the cursor currently is (7.5, 0) to (15 - tr,0) where 'w' is 15. Line won't show since you need three enclosed points in order to '.fill' color and we currently only have 2. Note that tr could be 0. However, if it's 7.5, then we essentially remain at the same point.
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 2: \(cursor_location)")
+                }
                 path.addArc(center: CGPoint(x: w - tr, y: tr), radius: tr, startAngle: Angle(degrees: -90), endAngle: Angle(degrees: 0), clockwise: false) //Not drawn in this case.
-                path.addLine(to: CGPoint(x: w, y: h)) //Cursor currently at (15,0). Draw line from (15,0) downward to (w, h)/(15, 100)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 3: \(cursor_location)")
+                }
+                path.addLine(to: CGPoint(x: w, y: h - br)) //Cursor currently at (15,tr). Draw line from (15,tr) downward to (w, h - br)/(15, 100 - br)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 4: \(cursor_location)")
+                }
                 path.addArc(center: CGPoint(x: w - br, y: h - br), radius: br, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 90), clockwise: false) //Not drawn in this case.
-                path.addLine(to: CGPoint(x: bl, y: h)) //Cursor currently at (15, 100). Draw line from (15, 100) leftward to (bl, h)/(7.5, 100)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 5: \(cursor_location)")
+                }
+                path.addLine(to: CGPoint(x: bl, y: h)) //Cursor currently at (15 - br, 100). Draw line from (15 - br, 100) leftward to (bl, h)/(7.5, 100). Note that bl could be 0 where we draw to the start of the x axis(0) since we will have no curve or it could be 7.5, meaning we remain at the same point where the next curve(bl) will start.
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 6: \(cursor_location)")
+                }
                 path.addArc(center: CGPoint(x: bl, y: h - bl), radius: bl, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 180), clockwise: false) //Draw an arc(curve) from a (7.5, 92.5) centre with a radius of 7.5
-                path.addLine(to: CGPoint(x: 0, y: tl)) //Cursor currently at (7.5, 100). Draw a line from (7.5, 100) to (0,tl)/(0, 7.5)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 7: \(cursor_location)")
+                }
+                path.addLine(to: CGPoint(x: 0, y: tl)) //Cursor currently at (0, 100 - bl). Draw a line from (0, 100 - bl) to (0,tl)/(0, 7.5)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 8: \(cursor_location)")
+                }
                 path.addArc(center: CGPoint(x: tl, y: tl), radius: tl, startAngle: Angle(degrees: 180), endAngle: Angle(degrees: 270), clockwise: false) //Draw an arc(curve) from a (7.5, 7.5) centre with a radius of 7.5
-                path.closeSubpath()
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 9: \(cursor_location)")
+                }
+                //Method 1 of closing the subpath:
+                //path.addLine(to: CGPoint(x: w/2, y: 0)) //Cursor currently at (7.5, 0) the actual value per 'path.currentPoint' is(7.500000089436603, 8.326672684688674e-16). Draw a line from (7.500000089436603, 8.326672684688674e-16) to (w/2, 0)(7.5, 0), to close the sub path to where it began. Now, the cursor started at (7.5,0) before the first line was drawn and it now ends at (7.5,0)
+                
+                //Method 2 of closing the subpath:
+                path.closeSubpath() //Cursor currently at (7.5, 0) the actual value per 'path.currentPoint' is(7.500000089436603, 8.326672684688674e-16). Draw a line from (7.500000089436603, 8.326672684688674e-16) to (w/2, 0)(7.5, 0), to close the sub path to where it began. Now, the cursor started at (7.5,0) before the first line was drawn and it now ends at (7.5,0)
+                if let cursor_location = path.currentPoint {
+                    print("Cursor Location 10(END): \(cursor_location)")
+                }
             }
             .fill(self.color)
         }
@@ -127,9 +161,9 @@ struct ViewBorders: View {
                 HStack(alignment: .top) {
                     //RoundedRectangle(cornerRadius: 30) //No overlay because the shape isn't wrapping around another view/control.
                     Rectangle()
-                        .fill(Color("ColorShifts"))
+                        .fill(Color("ColorShift"))
                         .frame(width: 15, height: 100, alignment: .leading)
-                        .background(RoundedCorners(color: .red, tl: 30, tr: 0, bl: 30, br: 0))
+                        .background(RoundedCorners(color: .red, tl: 30, tr: 30, bl: 30, br: 30))
                         //.offset(x: 0, y: 0)
                     
                     Image("motorbike_delivery")
