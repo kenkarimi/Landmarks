@@ -160,11 +160,12 @@ struct ViewBorders: View {
                 //Method: 1
                 HStack(alignment: .top) {
                     //RoundedRectangle(cornerRadius: 30) //No overlay because the shape isn't wrapping around another view/control.
-                    Rectangle()
-                        .fill(Color("ColorShift"))
-                        .frame(width: 15, height: 100, alignment: .leading)
-                        .background(RoundedCorners(color: .red, tl: 30, tr: 30, bl: 30, br: 30))
-                        //.offset(x: 0, y: 0)
+                    HStack {
+                    }
+                    .frame(width: 15, height: 100, alignment: .leading)
+                    .clipShape(Rectangle())
+                    .background(RoundedCorners(color: .red, tl: 30, tr: 30, bl: 30, br: 30))
+                    //.offset(x: 0, y: 0)
                     
                     Image("motorbike_delivery")
                         .resizable()
