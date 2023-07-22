@@ -18,7 +18,7 @@ struct FavoriteButton: View {
         Button {
             isSet.toggle()
         } label: {
-            Label("Toggle Favorite", systemImage: isSet ? "star.fill" : "star")
+            Label("Toggle Favorite", systemImage: isSet ? "star.fill" : "star") //Not to be confused with the systemName property of the Image component.
                 .labelStyle(.iconOnly)
                 .foregroundColor(isSet ? .yellow : .gray)
         }

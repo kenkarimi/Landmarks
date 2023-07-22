@@ -24,17 +24,17 @@ func load<T: Decodable>(_ filename: String) -> T {
     let data: Data
 
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-    else {
+    else { //Check whether file exists
         fatalError("Couldn't find \(filename) in main bundle.")
     }
 
-    do {
+    do { //Check whether there's data in the file.
         data = try Data(contentsOf: file)
     } catch {
         fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
     }
 
-    do {
+    do { //Decode the data.
         let decoder = JSONDecoder()
         return try decoder.decode(T.self, from: data)
     } catch {
